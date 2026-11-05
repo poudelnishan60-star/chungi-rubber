@@ -5,6 +5,7 @@ A free game based on the Nepali street game played with slices of tire rubber �
 Put your finger on your rubber, pull back and flick. Stop **on top of** a rival's rubber to win. Bricks, rocks, mud and slippery stone slabs get in the way.
 
 ## ▶ Play now (free)
+- **On itch.io:** https://nishannn.itch.io/chungi-rubber (play in the browser or download for Android)
 - **In your browser (phone or computer):** https://poudelnishan60-star.github.io/chungi-rubber/
   On a phone, use your browser's menu → **Add to Home screen** to keep it like an app.
 - **Android app:** download `chungi-rubber-1.0.apk` from the [latest release](https://github.com/poudelnishan60-star/chungi-rubber/releases/latest), open it on your phone and allow installing from your browser/files app when Android asks.
