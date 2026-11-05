@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#2b1d12" />
+  <title>Chungi Rubber</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="board"></canvas>
+
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div id="scores"></div>
+    <button id="pauseBtn" class="icon-btn" aria-label="Pause">&#10074;&#10074;</button>
+  </div>
+  <div id="hint" class="hidden"></div>
+  <div id="toast" class="hidden"></div>
+
+  <!-- Main menu -->
+  <section id="menu" class="screen">
+    <div class="panel title-panel">
+      <div class="logo-ring"></div>
+      <h1><span class="np">चुङ्गी</span><span class="en">CHUNGI RUBBER</span></h1>
+      <p class="tag">Flick your tire-rubber. Land on your rival's. Win.</p>
+      <button class="btn primary" id="continueBtn">▶ Play</button>
+      <button class="btn" data-go="levels">Levels <small id="menuStars"></small></button>
+      <button class="btn" data-go="setup">Versus</button>
+      <div class="btn-row">
+        <button class="btn" data-go="skins">Rubbers</button>
+        <button class="btn" data-go="howto">How to play</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn ghost" id="soundBtn">Sound: On</button>
+        <button class="btn ghost" id="musicBtn">Music: On</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Levels -->
+  <section id="levels" class="screen hidden">
+    <div class="panel">
+      <h2>Levels</h2>
+      <p class="tag" id="starTotal"></p>
+      <p class="tag small">Land on every white rubber. Fewer flicks = more stars.</p>
+      <div id="levelGrid" class="level-grid"></div>
+      <button class="btn ghost" data-go="menu">Back</button>
+    </div>
+  </section>
+
+  <!-- Rubbers (skins) -->
+  <section id="skins" class="screen hidden">
+    <div class="panel">
+      <h2>Rubbers</h2>
+      <p class="tag" id="skinStars"></p>
+      <div id="skinGrid" class="skin-grid"></div>
+      <button class="btn ghost" data-go="menu">Back</button>
+    </div>
+  </section>
+
+  <!-- Setup -->
+  <section id="setup" class="screen hidden">
+    <div class="panel">
+      <h2>Versus</h2>
+      <label class="row-label">Players</label>
+      <div class="seg" id="countSeg">
+        <button data-n="2" class="on">2</button><button data-n="3">3</button><button data-n="4">4</button>
+      </div>
+      <div id="playerList"></div>
+      <label class="row-label">Ground</label>
+      <div class="seg" id="groundSeg">
+        <button data-n="0">Easy</button><button data-n="1" class="on">Tricky</button><button data-n="2">Wild</button>
+      </div>
+      <label class="row-label">Points to win</label>
+      <div class="seg" id="pointsSeg">
+        <button data-n="3">3</button><button data-n="5" class="on">5</button><button data-n="7">7</button>
+      </div>
+      <label class="row-label">Computer skill</label>
+      <div class="seg" id="skillSeg">
+        <button data-n="0">Easy</button><button data-n="1" class="on">Medium</button><button data-n="2">Hard</button>
+      </div>
+      <button class="btn primary" id="startBtn">Start</button>
+      <button class="btn ghost" data-go="menu">Back</button>
+    </div>
+  </section>
+
+  <!-- How to play -->
+  <section id="howto" class="screen hidden">
+    <div class="panel">
+      <h2>How to play</h2>
+      <ol class="rules">
+        <li>Each player owns one slice of tire rubber — a <b>chungi</b> rubber. One <b>flick</b> per turn.</li>
+        <li>Touch your rubber, <b>drag back</b> and <b>let go</b>. Pull further to slide further.</li>
+        <li>Once you <b>touch</b> your rubber you have <b>10 seconds</b> to flick. Listen for the ticks — when time runs out it flicks by itself!</li>
+        <li>Your finger <b>shakes</b> the longer you hold — watch the arrow and let go at the right moment.</li>
+        <li>Stop <b>on top of</b> a rival's rubber to score. Just touching doesn't count!</li>
+        <li>Bounce off a rock or brick first and still land on top: <b>Trick shot = 2 points</b>.</li>
+        <li><b>3–4 players:</b> whoever you land on is <b>knocked out</b> of the round. The <b>last one left</b> wins the round.</li>
+        <li>Slide past the chalk line and you're <b>Out</b> — your rubber goes back and you lose the turn.</li>
+        <li><b>Levels:</b> land on all the white rubbers before your flicks run out. Use one flick per rubber for <b>★★★</b>. Stars unlock new rubbers.</li>
+      </ol>
+      <div class="legend">
+        <div><span class="sw rock"></span><b>Rock</b> bounces you off</div>
+        <div><span class="sw brick"></span><b>Brick</b> blocks the way</div>
+        <div><span class="sw mud"></span><b>Mud</b> slows you down</div>
+        <div><span class="sw slab"></span><b>Stone slab</b> slippery, slides further</div>
+      </div>
+      <button class="btn primary" data-go="menu">Got it</button>
+    </div>
+  </section>
+
+  <!-- Pause -->
+  <section id="pause" class="screen hidden">
+    <div class="panel">
+      <h2>Paused</h2>
+      <button class="btn primary" id="resumeBtn">Resume</button>
+      <button class="btn" id="restartBtn">Restart</button>
+      <button class="btn ghost" id="quitBtn">Main menu</button>
+    </div>
+  </section>
+
+  <!-- Round / match over -->
+  <section id="result" class="screen hidden">
+    <div class="panel">
+      <div id="resultDot" class="big-dot"></div>
+      <div id="resultStars" class="big-stars hidden"></div>
+      <h2 id="resultTitle">Player 1 wins!</h2>
+      <p id="resultSub" class="tag"></p>
+      <button class="btn primary" id="nextBtn">Next round</button>
+      <button class="btn hidden" id="retryBtn">Retry</button>
+      <button class="btn ghost" id="resultMenuBtn">Main menu</button>
+    </div>
+  </section>
+
+  <script src="game.js"></script>
+</body>
+</html>
